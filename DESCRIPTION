@@ -1,0 +1,22 @@
+Package: aacna
+Type: Package
+Title: Analysis Compendium of the Autophagy and AMPK Co-expression
+Version: 0.1.0
+Author: Mahmoud Ahmed
+Maintainer: Mahmoud Ahmed <mahmoud.s.fahmy@studetns.kasralainy.edu.eg>
+Description: Data, analysis scripts and output of the analysis of the autophagy
+  and AMPK coexpression in differentiating adipocytes
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Suggests: testthat
+Imports: dplyr,
+  purrr,
+  AnnotationDbi,
+  Biobase,
+  GEOquery,
+  WGCNA,
+  magrittr,
+  STRINGdb,
+  dynamicTreeCut
+RoxygenNote: 6.0.1
