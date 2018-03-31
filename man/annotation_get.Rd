@@ -4,7 +4,7 @@
 \alias{annotation_get}
 \title{Get GO annotations}
 \usage{
-annotation_get(go_id, go_names, go_db, org_db, columns,
+annotation_get(go_id, go_names, go_db, go_term, org_db, columns,
   remove_predicted = TRUE, ...)
 }
 \arguments{
@@ -13,6 +13,8 @@ annotation_get(go_id, go_names, go_db, org_db, columns,
 \item{go_names}{A character vector of GO category names}
 
 \item{go_db}{A GO.db object}
+
+\item{go_term}{A GO.db object for GO terms}
 
 \item{org_db}{An organism object}
 

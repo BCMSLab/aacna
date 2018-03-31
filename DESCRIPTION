@@ -5,11 +5,12 @@ Version: 0.1.0
 Author: Mahmoud Ahmed
 Maintainer: Mahmoud Ahmed <mahmoud.s.fahmy@studetns.kasralainy.edu.eg>
 Description: Data, analysis scripts and output of the analysis of the autophagy
-  and AMPK coexpression in differentiating adipocytes
+  and AMPK coexpression in differentiating adipocytes.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Suggests: testthat
+Suggests: testthat,
+    covr
 Imports: dplyr,
   purrr,
   AnnotationDbi,
@@ -18,5 +19,9 @@ Imports: dplyr,
   WGCNA,
   magrittr,
   STRINGdb,
-  dynamicTreeCut
+  dynamicTreeCut,
+  clusterProfiler,
+  readr,
+  igraph,
+  reshape2
 RoxygenNote: 6.0.1

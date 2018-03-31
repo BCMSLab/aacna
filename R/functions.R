@@ -310,3 +310,70 @@ interactions_get <- function(genes, ...) {
     setNames(c('from', 'to'))
 }
 
+
+#' Make graph object of module members
+#'
+#' @param modules A list of module members
+#' @param edge_list An edge list of the members connections
+#'
+#' @return A list of graph objects
+#'
+#' @importFrom purrr map
+#' @importFrom igraph graph_from_data_frame subgraph V
+#'
+#' @export
+module_network <- function(modules, edge_list) {
+  map(modules, function(x) {
+    edge_list %>%
+      graph_from_data_frame(directed = FALSE) %>%
+      subgraph(v = V(.)$name %in% x)
+  })
+}
+
+#' Calculate member importance in a graph
+#'
+#' @param gs A list of graph objects
+#' @param measure A character string of the centrality measure
+#'
+#' @return A data.frame
+#'
+#' @importFrom purrr map
+#' @importFrom dplyr bind_rows
+#' @import igraph
+#'
+#' @export
+member_importance <- function(gs, measure = 'all') {
+  map(gs, function(g) {
+    list(names = get.vertex.attribute(g, 'name'),
+         degree = centr_degree(g, normalized = TRUE)$res,
+         betweenness = centr_betw(g, directed = FALSE, normalized = TRUE)$res,
+         closeness = centr_clo(g, normalized = TRUE)$res,
+         hub = hub_score(g)$vector) %>%
+      bind_rows()
+      }) %>%
+    bind_rows(.id = 'module')
+}
+
+#' Calculate pair-wise similarity in an expresison matrix
+#'
+#' @param dat A data.frame of transposed expression matrix
+#' @param measure A character string of the similarity measure
+#'
+#' @return A data.fame
+#'
+#' @importFrom WGCNA adjacency TOMsimilarity cor
+#' @importFrom reshape2 melt
+#' @importFrom dplyr filter
+#' @importFrom stats setNames
+#'
+#' @export
+member_similarity <- function(dat, measure = 'all') {
+  sim <- list()
+  sim$Adjacency <- adjacency(dat, power = 5)
+  sim$TOM <- TOMsimilarity(sim$Adjacency)
+  attr(sim$TOM, 'dimnames') <- attr(sim$Adjacency, 'dimnames')
+  sim$Pearson <- cor(dat)
+
+  melt(sim) %>%
+    setNames(c('x1', 'x2', 'value', 'measure'))
+}

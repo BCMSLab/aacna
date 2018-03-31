@@ -1,0 +1,7 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^docker/$
+^analysis/$
+^\.travis\.yml$
+^codecov\.yml$
+^appveyor\.yml$

@@ -7,6 +7,7 @@ library(tidyverse)
 library(GEOquery)
 library(testthat)
 library(limma)
+library(igraph)
 
 # global variables
 data <- 'data/'
@@ -133,6 +134,9 @@ test_that('multi_data in appropriate shape', {
 # check samples and genes
 goodSamplesGenes(multi_data$GSE34150$data, verbose = FALSE)$allOK
 
+# calculate threshold
+sft <- pickSoftThreshold(multi_data$GSE34150$data)
+
 # run analysis
 net <- cna_run(multi_data$GSE34150$data, 5)
 
@@ -155,7 +159,10 @@ gene <- list(
 # module correlation to stage
 
 # module over-representation
-mat <- esets$GSE34150
+e <- getGEO('GSE34150', destdir = data)[[1]]
+mat <- collapseRows(exprs(e),
+                    rowGroup = fData(e)$Symbol,
+                    rowID = featureNames(e))[[1]]
 mat[mat < 0] <- 0
 mat <- log(mat + 1)
 
@@ -175,6 +182,7 @@ test_that('overrepresentation done correctly', {
 
 # check
 # module to network
+# edge list
 networks <- exportNetworkToVisANT(net$adj, threshold = .1)
 
 # string interactions
@@ -187,6 +195,22 @@ test_that('string interactions obtained correctly', {
   expect_s3_class(interactions, 'data.frame')
   expect_identical(names(interactions), c('from', 'to'))
 })
+
+# make graph objects
+gs <- module_network(gene$lst[-2], networks[, 1:2])
+
+# check
+test_that('network graphs constructed properly', {
+  expect_identical(class(gs[[1]]), 'igraph')
+  expect_true(all(igraph::V(gs$blue)$name %in% gene$lst$blue))
+  expect_true(all(igraph::V(gs$turquoise)$name %in% gene$lst$turquoise))
+  })
+
+# member importance
+importance <- member_importance(gs)
+
+# pairwise similarity
+similarity <- member_similarity(multi_data$GSE34150$data)
 
 # module comparisons
 comp <- list()
@@ -213,6 +237,15 @@ test_that('comarison done correctly', {
   expect_identical(unique(comp$ontology), c('MF', 'CC'))
   expect_identical(levels(comp$Cluster), names(gene$lst[-2]))
 })
+
+# module preservation
+multi_color <- net$merged_colors
+names(multi_color) <- colnames(multi_data$GSE34150$data)
+multi_color <- list(GSE34150 = multi_color)
+allowWGCNAThreads(3)
+module_preserv <- modulePreservation(multiData = multi_data,
+                                     multiColor = multi_color,
+                                     nPermutations = 10)
 
 # clean
 
