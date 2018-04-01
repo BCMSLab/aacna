@@ -10,7 +10,7 @@ load('data/wgcna.rda')
 tables_dir <- 'manuscript/tables/'
 
 # generate table
-#
+
 data_frame('Series ID' = c('GSE15018', 'GSE20696', 'GSE34150', 'GSE69313'),
            'Platform ID' = c('GPL6845', 'GPL1261', 'GPL6885', 'GPL6246'),
            Samples = c('54', '8', '24', '48'),

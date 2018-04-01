@@ -11,8 +11,13 @@ TAB_DIR=manuscript/tables
 DATA=data
 LOG=log
 
-all: dir_tree $(DATA)/wgcna.rda $(TAB_DIR)/* $(FIG_DIR)/* clean
+all: install dir_tree $(DATA)/wgcna.rda $(TAB_DIR)/* $(FIG_DIR)/* clean
 
+# install/update the functions
+install:
+	Rscript -e "devtools::install('..')"
+
+# make directory tree
 dir_tree:
 	test ! -d $(LOG) && mkdir $(LOG) || echo '$(LOG)/ is already there.'
 	test ! -d $(DATA) && mkdir $(DATA) || echo '$(DATA)/ is already there.'
