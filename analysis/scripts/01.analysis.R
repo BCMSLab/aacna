@@ -250,4 +250,4 @@ module_preserv <- modulePreservation(multiData = multi_data,
 # clean
 
 # save
-save.image('data/wgcna.rds')
+save.image('data/wgcna.rda')
