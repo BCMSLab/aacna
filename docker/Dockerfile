@@ -8,6 +8,7 @@ RUN apt-get -y install libpcre3-dev
 RUN apt-get -y install liblzma-dev
 RUN apt-get -y install libbz2-dev
 RUN apt-get -y install libudunits2-dev
+RUN apt-get -y install graphviz
 
 RUN Rscript -e "update.packages(ask=FALSE)"
 RUN Rscript -e "BiocInstaller::biocLite('Biobase', quiet = TRUE)"

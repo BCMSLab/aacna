@@ -188,12 +188,21 @@ networks <- exportNetworkToVisANT(net$adj, threshold = .1)
 # string interactions
 interactions <- interactions_get(gene$df,
                                  species = 10090,
-                                 input_directory = tempdir())
-
+                                 input_directory = data)
 
 test_that('string interactions obtained correctly', {
   expect_s3_class(interactions, 'data.frame')
   expect_identical(names(interactions), c('from', 'to'))
+})
+
+interactions_evidence <- interactions_get(gene$df,
+                                          species = 10090,
+                                          input_directory = data,
+                                          evidence = TRUE)
+
+test_that('string interactions_evidence obtained correctly', {
+  expect_s3_class(interactions_evidence, 'data.frame')
+  expect_identical(names(interactions_evidence), c('from', 'to', 'evidence', 'value'))
 })
 
 # make graph objects

@@ -11,7 +11,7 @@ TAB_DIR=manuscript/tables
 DATA=data
 LOG=log
 
-all: install dir_tree $(DATA)/wgcna.rda $(TAB_DIR)/* $(FIG_DIR)/* clean
+all: $(DATA)/wgcna.rda $(TAB_DIR)/* $(FIG_DIR)/* clean
 
 # install/update the functions
 install:
@@ -37,7 +37,11 @@ $(TAB_DIR)/%.tex: $(TAB_SRC)/%.R $(DATA)/wgcna.rda
 $(FIG_DIR)/%.png: $(FIG_SRC)/%.R $(DATA)/wgcna.rda
 	R CMD BATCH $(R_OPT) $< $(LOG)/$(<F).Rout
 
+# generate workflow
+$(FIG_DIR)/workflow.png: $(FIG_SRC)/workflow.dot
+	dot -Tpng $(FIG_SRC)/workflow.dot -o $(FIG_DIR)/workflow.png
+
 # clean up
 clean:
 	test -f *.pdf && rm *.pdf || echo 'All clean.'
-	test -f *.pdf && rm *.RData || echo 'All clean.'
+	test -f *.RData && rm *.RData || echo 'All clean.'

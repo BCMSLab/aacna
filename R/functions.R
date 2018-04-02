@@ -278,36 +278,54 @@ module_compare <- function(index, level = 4, ...) {
 #' Get STRING interactions
 #'
 #' @param genes A data.frame of at least one column of gene sybols
+#' @param evidence A logical (default FALSE) of whether to include the evidence
 #' @param ... Other arguments passed to new
 #'
 #' @return A data.frame
 #'
 #' @import STRINGdb
 #' @importFrom readr read_delim cols_only
-#' @importFrom dplyr select inner_join starts_with
+#' @importFrom dplyr select inner_join starts_with filter
+#' @importFrom tidyr gather
 #' @importFrom stats na.omit setNames
 #' @importFrom magrittr %>%
 #'
 #' @export
-interactions_get <- function(genes, ...) {
+interactions_get <- function(genes, input_directory, evidence = FALSE, ...) {
+
+  fl <- list.files(input_directory, pattern = 'protein_links.tsv.gz', full.names = TRUE)
+
   ptn <- list()
-  ptn$new <- STRINGdb$new(...)
+  ptn$new <- STRINGdb$new(input_directory = input_directory, ...)
   ptn$string_mapped <- ptn$new$map(genes, 'symbol', removeUnmappedRows = TRUE)
   ptn$string_ids <- ptn$string_mapped$STRING_id
 
-  ptn$new$get_interactions(ptn$string_ids)
+  if(!file.exists(fl)) {
+    ptn$new$get_interactions(ptn$string_ids)
+  }
 
+  if(evidence == TRUE) {
+    ptn$interactions <- read_delim(fl, delim = ' ')
 
-  fl <- list.files(tempdir(), pattern = 'protein_links.tsv.gz', full.names = TRUE)
-
-  ptn$interactions <- read_delim(fl, delim = ' ',
-                                 col_types = cols_only(protein1 = 'c', protein2 = 'c'))
-  ptn$interactions %>%
-    inner_join(ptn$string_mapped, by = c('protein1' = 'STRING_id')) %>%
-    inner_join(ptn$string_mapped, by = c('protein2' = 'STRING_id')) %>%
-    na.omit() %>%
-    select(starts_with('symbol')) %>%
-    setNames(c('from', 'to'))
+    df <- ptn$interactions %>%
+      inner_join(ptn$string_mapped, by = c('protein1' = 'STRING_id')) %>%
+      inner_join(ptn$string_mapped, by = c('protein2' = 'STRING_id')) %>%
+      na.omit() %>%
+      select(-starts_with('protein'), -starts_with('color')) %>%
+      gather(evidence, value, -starts_with('symbol')) %>%
+      filter(value != 0) %>%
+      setNames(c('from', 'to', 'evidence', 'value'))
+  } else {
+    ptn$interactions <- read_delim(fl, delim = ' ',
+                                   col_types = cols_only(protein1 = 'c', protein2 = 'c'))
+    df <- ptn$interactions %>%
+      inner_join(ptn$string_mapped, by = c('protein1' = 'STRING_id')) %>%
+      inner_join(ptn$string_mapped, by = c('protein2' = 'STRING_id')) %>%
+      na.omit() %>%
+      select(starts_with('symbol')) %>%
+      setNames(c('from', 'to'))
+  }
+  return(df)
 }
 
 

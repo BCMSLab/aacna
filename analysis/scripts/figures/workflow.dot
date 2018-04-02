@@ -1,0 +1,58 @@
+digraph workflow {
+    graph [ dpi = 300 ];
+    splines=ortho
+    nodesep=0.6
+    a1 [shape=box, label="Gene Expression Omnibus\n(GEO)"];
+    p2p3 [shape=none, label="", width=0, height=0];
+    a1 -> p2p3 [dir=none, fontcolor=darkgreen, label = "  GEOmetadb\l  GEOquery\l"]
+
+    node [shape=none, label="", width=0, height=0]
+    p2; p3
+
+    {rank=same; p2; p2p3; p3}
+    p2 -> p2p3 -> p3 [dir=none]
+
+    a2 [shape=box, label="Main dataset\n(GES34150)"]
+    a3 [shape=box, label="Validation datasets\n(GSE15018, GSE20696 &\nGSE69313)"]
+    p2 -> a2
+    p3 -> a3
+
+    a4 [shape=box, color=red, label="Gene Ontology\n (GO:0006914 &\n GO:0006914)"]
+    {rank=same; a4;  a2; a3}
+
+    a5 [shape=box, label="AMPK (14)\nAutophagy (167)"]
+    a6 [shape=box, label="Expression data\n(24 samples; 3 stages;\n 8 time points)"]
+    {rank=same; a5; a6}
+    a4 -> a5 [label="  GO.db\l  org.Mm.ed.db\l", fontcolor=darkgreen]
+    a2 -> a6
+    a5 -> a6
+
+    a7 [shape=box, label="Modules/colors\n(2)"]
+    a8 [shape=box, label="STRING database\n(Protein interactions)",color=red]
+    {rank=same; a7; a8}
+    a6 -> a7 [label="  WGCNA", fontcolor=darkgreen]
+
+    node [shape=point, label=none]
+    f1; f2; f3; f4
+    {rank=same; f1; f2; f3; f4}
+
+    a8 -> f1 [dir=none]
+    a7 -> f2 [dir=none]
+    a3 -> f3 [dir=none]
+
+    f1-> f2 -> f3 -> f4 [dir=none]
+
+    e1 [shape=none, label="Co-expression networks &\nnovel interactions"]
+    e2 [shape=none, label="Correlation with\n stage/time"]
+    e3 [shape=none, label="Preservation in other\ndatasets"]
+    e4 [shape=none, label="Over-representation &\nList-based enrichment"]
+
+    {rank=same; e1; e2; e3; e4}
+
+    f1 -> e1 [label="  STRINGdb\l  igraph\l", fontcolor=darkgreen]
+    f2 -> e2 [label="  cor", fontcolor=darkgreen]
+    f3 -> e3 [label="  collapseRows\l  modulePreservation\l", fontcolor=darkgreen]
+    f4 -> e4 [label="limma\l  clusterProfiler\l", fontcolor=darkgreen]
+
+    a5 -> a8 [style=invis]
+    }
