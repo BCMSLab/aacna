@@ -42,7 +42,7 @@ networks %>%
         ungroup() %>%
         mutate(color = ifelse(duplicated(color), '', color)) %>%
         setNames(c('Module/color', 'AMPK', 'Autophagy')) %>%
-        xtable(caption = 'Novel AMPK and autophagy interactions.',
+        xtable(caption = 'Summary of reported and novel AMPK-autophagy interactions.',
                label = 'tab:module_interactions',
                align = 'cllp{.6\\textwidth}')
 
