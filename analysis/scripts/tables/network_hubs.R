@@ -17,6 +17,7 @@ importance %>%
   dplyr::slice(1:5) %>%
   ungroup() %>%
   mutate(module = ifelse(duplicated(module), '', module)) %>%
+  mutate_if(is.numeric, function(x) as.character(round(x, 2))) %>%
   setNames(c('Module/color', 'Gene', 'Degree', 'Betweenness', 'Closeness','Hub Score')) %>%
   xtable(caption = 'Top five hubs in the different module networks.',
          label = 'tab:network_hubs',

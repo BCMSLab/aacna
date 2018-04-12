@@ -38,7 +38,7 @@ inner_join(df1, df2, by =c('Cluster'='color', 'geneID'='to')) %>%
   setNames(c('Module/color', 'Ontology', 'AMPK', 'Term', 'Autophgy')) %>%
   xtable(caption = 'AMPK and autophagy interactions by gene ontology term.',
          label = 'tab:module_interactions_term',
-         align = 'cllllp{.1\\textwidth}') %>%
+         align = 'clllp{.4\\textwidth}p{.15\\textwidth}') %>%
   print(include.rownames = FALSE,
         booktabs = TRUE,
         table.placement = 'H',
