@@ -293,37 +293,28 @@ module_compare <- function(index, level = 4, ...) {
 #' @export
 interactions_get <- function(genes, input_directory, evidence = FALSE, ...) {
 
-  fl <- list.files(input_directory, pattern = 'protein_links.tsv.gz', full.names = TRUE)
-
   ptn <- list()
   ptn$new <- STRINGdb$new(input_directory = input_directory, ...)
   ptn$string_mapped <- ptn$new$map(genes, 'symbol', removeUnmappedRows = TRUE)
   ptn$string_ids <- ptn$string_mapped$STRING_id
-
-  if(!file.exists(fl)) {
-    ptn$new$get_interactions(ptn$string_ids)
-  }
+  ptn$interactions <- ptn$new$get_interactions(ptn$string_ids)
 
   if(evidence == TRUE) {
-    ptn$interactions <- read_delim(fl, delim = ' ')
-
     df <- ptn$interactions %>%
-      inner_join(ptn$string_mapped, by = c('protein1' = 'STRING_id')) %>%
-      inner_join(ptn$string_mapped, by = c('protein2' = 'STRING_id')) %>%
-      na.omit() %>%
-      select(-starts_with('protein'), -starts_with('color')) %>%
-      gather(evidence, value, -starts_with('symbol')) %>%
-      filter(value != 0) %>%
-      setNames(c('from', 'to', 'evidence', 'value'))
+      inner_join(ptn$string_mapped,
+                 by = c(from = "STRING_id")) %>%
+      inner_join(ptn$string_mapped,
+                 by = c(to = "STRING_id")) %>% na.omit() %>%
+      select(-from, -to, -starts_with("color")) %>%
+      gather(evidence, value, -starts_with("symbol")) %>%
+      filter(value != 0) %>% setNames(c("from", "to", "evidence", "value"))
   } else {
-    ptn$interactions <- read_delim(fl, delim = ' ',
-                                   col_types = cols_only(protein1 = 'c', protein2 = 'c'))
     df <- ptn$interactions %>%
-      inner_join(ptn$string_mapped, by = c('protein1' = 'STRING_id')) %>%
-      inner_join(ptn$string_mapped, by = c('protein2' = 'STRING_id')) %>%
-      na.omit() %>%
-      select(starts_with('symbol')) %>%
-      setNames(c('from', 'to'))
+      dplyr::select(from, to) %>%
+      inner_join(ptn$string_mapped, by = c(from = "STRING_id")) %>%
+      inner_join(ptn$string_mapped, by = c(to = "STRING_id")) %>%
+      na.omit() %>% select(starts_with("symbol")) %>%
+      setNames(c("from", "to"))
   }
   return(df)
 }
