@@ -1,28 +1,5 @@
 context("functions")
 
-test_that('test annotation_get', {
-  library(org.Mm.eg.db)
-  library(GO.db)
-
-  go_ids <- c('GO:0006914', 'GO:0004679')
-  go_names <- c('autophagy', 'ampk')
-  go_db <- GOBPCHILDREN
-  go_term <- GOTERM
-  org_db <- org.Mm.eg.db
-  columns <- 'SYMBOL'
-
-  df <- annotation_get(go_ids,
-                       go_names,
-                       go_db,
-                       go_term,
-                       org_db,
-                       columns)
-
-  expect_s3_class(df, 'data.frame')
-  expect_identical(unique(df$category), go_names)
-  expect_true(all(!is.na(df$category)))
-})
-
 test_that('test expression_subset', {
   library(Biobase)
   data("sample.ExpressionSet")
@@ -78,21 +55,3 @@ test_that('test cna_run', {
   expect_equal(length(cna), 9)
   expect_equal(length(cna$colors), nrow(sample.ExpressionSet)[[1]])
 })
-
-test_that('test module_compare', {
-  library(org.Mm.eg.db)
-  set.seed(1234)
-  genes <- sample(keys(org.Mm.eg.db, 'SYMBOL'), 10)
-  colors <- sample(c('red', 'blue'), 10, replace = TRUE)
-  ind <- split(genes, colors)
-
-  comp <- module_compare(ind,
-                         fun = 'enrichGO',
-                         OrgDb = org.Mm.eg.db,
-                         keyType = 'SYMBOL',
-                         ont = 'CC',
-                         pAdjustMethod = 'fdr')
-
-  expect_s3_class(comp, 'data.frame')
-  expect_identical(levels(comp$Cluster), c('blue', 'red'))
-  })
