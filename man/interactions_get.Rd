@@ -4,10 +4,12 @@
 \alias{interactions_get}
 \title{Get STRING interactions}
 \usage{
-interactions_get(genes, ...)
+interactions_get(genes, evidence = FALSE, ...)
 }
 \arguments{
 \item{genes}{A data.frame of at least one column of gene sybols}
+
+\item{evidence}{A logical (default FALSE) of whether to include the evidence}
 
 \item{...}{Other arguments passed to new}
 }

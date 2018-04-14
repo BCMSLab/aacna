@@ -12,7 +12,7 @@
 #' @return A data.frame
 #'
 #' @importFrom purrr map possibly
-#' @importFrom AnnotationDbi select mget Term
+#' @importFrom AnnotationDbi mget Term
 #' @importFrom dplyr bind_rows filter mutate
 #' @importFrom magrittr %>%
 #'
@@ -35,9 +35,9 @@ annotation_get <- function(go_id, go_names, go_db, go_term, org_db, columns, rem
   # get annotation columns
   df <- map(ids, function(x) {
     AnnotationDbi::select(org_db,
-                          x,
-                          columns,
-                          'GO')
+           x,
+           columns,
+           'GO')
   }) %>%
     bind_rows(.id = 'category') %>%
     na.omit()
@@ -285,16 +285,16 @@ module_compare <- function(index, level = 4, ...) {
 #'
 #' @import STRINGdb
 #' @importFrom readr read_delim cols_only
-#' @importFrom dplyr select inner_join starts_with filter
+#' @importFrom dplyr inner_join starts_with filter
 #' @importFrom tidyr gather
 #' @importFrom stats na.omit setNames
 #' @importFrom magrittr %>%
 #'
 #' @export
-interactions_get <- function(genes, input_directory, evidence = FALSE, ...) {
+interactions_get <- function(genes, evidence = FALSE, ...) {
 
   ptn <- list()
-  ptn$new <- STRINGdb$new(input_directory = input_directory, ...)
+  ptn$new <- STRINGdb$new(...)
   ptn$string_mapped <- ptn$new$map(genes, 'symbol', removeUnmappedRows = TRUE)
   ptn$string_ids <- ptn$string_mapped$STRING_id
   ptn$interactions <- ptn$new$get_interactions(ptn$string_ids)
@@ -305,7 +305,7 @@ interactions_get <- function(genes, input_directory, evidence = FALSE, ...) {
                  by = c(from = "STRING_id")) %>%
       inner_join(ptn$string_mapped,
                  by = c(to = "STRING_id")) %>% na.omit() %>%
-      select(-from, -to, -starts_with("color")) %>%
+      dplyr::select(-from, -to, -starts_with("color")) %>%
       gather(evidence, value, -starts_with("symbol")) %>%
       filter(value != 0) %>% setNames(c("from", "to", "evidence", "value"))
   } else {
@@ -313,7 +313,8 @@ interactions_get <- function(genes, input_directory, evidence = FALSE, ...) {
       dplyr::select(from, to) %>%
       inner_join(ptn$string_mapped, by = c(from = "STRING_id")) %>%
       inner_join(ptn$string_mapped, by = c(to = "STRING_id")) %>%
-      na.omit() %>% select(starts_with("symbol")) %>%
+      na.omit() %>%
+      dplyr::select(starts_with("symbol")) %>%
       setNames(c("from", "to"))
   }
   return(df)
