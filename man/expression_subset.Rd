@@ -18,10 +18,13 @@ expression_subset(eset, byrow, bycol, collapse_rows = FALSE, ...)
 \item{...}{Other arguments passed to collapse_rows}
 }
 \value{
-A tidy expression matrix
+A tidy expression matrix. The dimensions of the matrix are either
+equal to the byrow and bycol argumnets when collapse_rows is FALSE, or equal
+the rowGroup and the bycol arguments otherwise
 }
 \description{
-Subset an ExpressionSet
+Subset an ExpressionSet object by row and/or column, and perform collapse of
+repeated probes corresponding to the same gene ID
 }
 \examples{
 library(Biobase)

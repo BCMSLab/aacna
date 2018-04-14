@@ -14,8 +14,16 @@ interactions_get(genes, evidence = FALSE, ...)
 \item{...}{Other arguments passed to new}
 }
 \value{
-A data.frame
+A data.frame of at least two columns in the form of a edgelist with
+an additional column, evidence when evidence is TRUE
 }
 \description{
-Get STRING interactions
+A wrapper to get STRING interactions in a nice format
+}
+\examples{
+\dontrun{
+genes = c("Atg4c", "Il3", "Lamp3", "Lepr", "Mefv")
+interactions_get(genes)
+}
+
 }
