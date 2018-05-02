@@ -43,3 +43,4 @@ melt(multi_data) %>%
          filename = paste(figures_dir, 'expression_averages.png', sep = '/'),
          width = 18, height = 6, units = 'cm',
          pointsize = 1)
+

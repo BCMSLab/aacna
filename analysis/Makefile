@@ -16,6 +16,7 @@ all: install \
 	$(DATA)/wgcna.rda \
 	$(FIG_DIR)/differentiation_markers.png \
 	$(FIG_DIR)/expression_averages.png \
+	$(FIG_DIR)/expression_averages_all.png \
 	$(FIG_DIR)/gene_membership.png \
 	$(FIG_DIR)/module_cor_overrep.png \
 	$(FIG_DIR)/module_networks.png \
