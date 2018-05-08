@@ -2,6 +2,9 @@
 
 language: R
 cache: packages
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libudunits2-dev
 r_packages:
   - covr
 bioc_packages:
