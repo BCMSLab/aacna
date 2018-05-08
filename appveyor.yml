@@ -16,8 +16,9 @@ cache:
 # Adapt as necessary starting from here
 
 build_script:
-  - travis-tool.sh install_deps
-  - travis-tool.sh install_bioc_deps
+  - travis-tool.sh before_install
+  - travis-tool.sh r_packages
+  - travis-tool.sh bioc_packages
 
 test_script:
   - travis-tool.sh run_tests
