@@ -10,10 +10,13 @@ r_packages:
 bioc_packages:
   - Biobase
   - AnnotationDbi
+  - impute
+  - preprocessCore
   - clusterProfiler
   - GEOquery
-  - STRINGdb
   - WGCNA
+  - STRINGdb
+  - GO.db
 git:
   submodules: false
 warnings_are_errors: false
