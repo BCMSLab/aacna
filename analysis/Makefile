@@ -11,8 +11,7 @@ TAB_DIR=manuscript/tables
 DATA=data
 LOG=log
 
-all: install \
-	dir_tree \
+all: dir_tree \
 	$(DATA)/wgcna.rda \
 	$(FIG_DIR)/differentiation_markers.png \
 	$(FIG_DIR)/expression_averages.png \
@@ -26,7 +25,7 @@ all: install \
 	$(FIG_DIR)/qc_eda.png \
 	$(FIG_DIR)/sft_power.png \
 	$(FIG_DIR)/similarity_centrality.png \
-	$(FIG_DIR)/workflow.png \
+	$(FIG_DIR)/rtqpcr.png \
 	$(FIG_DIR)/workflow.png \
 	$(TAB_DIR)/datasets.tex \
 	$(TAB_DIR)/go_genes.tex \
