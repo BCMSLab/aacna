@@ -33,6 +33,7 @@ all: dir_tree \
 	$(TAB_DIR)/module_interactions_term.tex \
 	$(TAB_DIR)/module_members.tex \
 	$(TAB_DIR)/network_hubs.tex \
+	$(TAB_DIR)/rtqpcr_primers.tex \
 	$(TAB_DIR)/time_points.tex \
 	clean
 
