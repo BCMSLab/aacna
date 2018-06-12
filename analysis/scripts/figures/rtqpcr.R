@@ -6,8 +6,15 @@ library(pcr)
 library(cowplot)
 
 # load data
+url = 'https://ndownloader.figshare.com/files/11929469'
+
+if(!file.exists('data/rtqpcr.xlsx')) {
+  download.file(url, destfile = 'data/rtqpcr.xlsx')
+}
+
 qpcr <- map(list(b = 1, g = 2),
             function(x) read_excel('data/rtqpcr.xlsx', sheet = x))
+
 norm_rel <- map(qpcr, function(x) {
   ct <- select(x, 3:ncol(x))
   group <- x$stage

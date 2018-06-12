@@ -7,6 +7,13 @@ library(xtable)
 tables_dir <- 'manuscript/tables/'
 
 # load data
+
+url = 'https://ndownloader.figshare.com/files/11929469'
+
+if(!file.exists('data/rtqpcr.xlsx')) {
+  download.file(url, destfile = 'data/rtqpcr.xlsx')
+}
+
 primers <- read_excel('data/rtqpcr.xlsx', sheet = 3)
 
 # generate tables

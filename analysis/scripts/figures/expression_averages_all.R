@@ -45,7 +45,7 @@ esets <- map2(gse, samples, function(x, y) {
 
 names(esets) <- gse
 
-esets %>%
+(esets %>%
   map(melt) %>%
   bind_rows(.id = 'gse') %>%
   setNames(c('gse', 'symbol', 'gsm', 'exp')) %>%
@@ -67,7 +67,7 @@ esets %>%
     })
   }) %>%
   plot_grid(plotlist = .,
-            nrow = 1) %>%
+            nrow = 1)) %>%
 ggsave(plot = .,
        filename = paste(figures_dir, 'expression_averages_all.png', sep = '/'),
        width = 18, height = 6, units = 'cm',

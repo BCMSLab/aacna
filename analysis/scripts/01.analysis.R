@@ -159,8 +159,8 @@ gene <- list(
 # module correlation to stage
 
 # module over-representation
-e <- getGEO('GSE34150', destdir = data)[[1]]
-mat <- collapseRows(exprs(e),
+e <- getGEO('GSE34150', destdir = 'data/')[[1]]
+mat <- collapseRows(Biobase::exprs(e),
                     rowGroup = fData(e)$Symbol,
                     rowID = featureNames(e))[[1]]
 mat[mat < 0] <- 0

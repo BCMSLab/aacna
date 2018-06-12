@@ -12,7 +12,6 @@ DATA=data
 LOG=log
 
 all: dir_tree \
-        install \
 	$(DATA)/wgcna.rda \
 	$(FIG_DIR)/differentiation_markers.png \
 	$(FIG_DIR)/expression_averages.png \
