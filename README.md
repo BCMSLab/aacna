@@ -46,5 +46,4 @@ The version of **R** that was used to perform this analysis is the 3.4.2 (2017-0
 
 ## More
 
-* Preprint, [here]()
-* Published paper, [here]()
+* Published paper, [here](http://www.mdpi.com/1422-0067/19/6/1808/htm)
